@@ -29,16 +29,20 @@ export class MeshRendererComponent extends Component {
  * Editor Bridge for Three.js integration
  * 编辑器桥接器 - 用于Three.js集成
  */
+// Re-export components for convenience
+export { TransformComponent, ThreeLightComponent } from '../components';
+
 export class ThreeEditorBridge {
   private world: World;
   private renderSystem: ThreeRenderSystem;
 
-  constructor(world: World, canvas: HTMLCanvasElement) {
+  constructor(world: World, canvas: HTMLCanvasElement, renderSystem: ThreeRenderSystem) {
     this.world = world;
-    this.renderSystem = new ThreeRenderSystem({ canvas });
+    this.renderSystem = renderSystem;
     
-    // Add render system to world
-    this.world.addSystem(this.renderSystem);
+    // Set canvas on the existing render system if needed
+    // The render system should handle canvas updates
+    this.renderSystem.setCanvas(canvas);
   }
 
   /**
@@ -180,26 +184,26 @@ export class ThreeEditorBridge {
   }
 
   /**
-   * Add default lighting to scene
-   * 为场景添加默认光照
+   * Add default scene entities (camera and lighting)
+   * 为场景添加默认实体（相机和光照）
    */
-  addDefaultLighting(): void {
-    // Ambient light
-    const ambientLight = this.world.createEntity();
-    ambientLight.addComponent(new TransformComponent());
-    ambientLight.addComponent(new ThreeLightComponent({
-      lightType: 'ambient',
-      color: '#404040',
-      intensity: 0.3
-    }));
+  addDefaultSceneEntities(): void {
+    console.log('ThreeRenderBridge: Creating default scene entities');
+    
+    // Create a single directional light (sun light)
+    let mainLight;
+    if ((this.world as any).createNamedEntity) {
+      mainLight = (this.world as any).createNamedEntity('Directional Light');
+    } else {
+      mainLight = this.world.createEntity();
+    }
 
-    // Main directional light
-    const mainLight = this.world.createEntity();
     mainLight.addComponent(new TransformComponent(
       { x: 10, y: 10, z: 5 },
-      { x: 0, y: 0, z: 0 },
+      { x: -45, y: 45, z: 0 },
       { x: 1, y: 1, z: 1 }
     ));
+
     mainLight.addComponent(new ThreeLightComponent({
       lightType: 'directional',
       color: '#ffffff',
@@ -207,31 +211,21 @@ export class ThreeEditorBridge {
       castShadow: true
     }));
 
-    // Fill light
-    const fillLight = this.world.createEntity();
-    fillLight.addComponent(new TransformComponent(
-      { x: -5, y: 5, z: -5 },
-      { x: 0, y: 0, z: 0 },
-      { x: 1, y: 1, z: 1 }
-    ));
-    fillLight.addComponent(new ThreeLightComponent({
-      lightType: 'directional',
-      color: '#4080ff',
-      intensity: 0.3
-    }));
+    // Create main camera entity
+    let mainCamera;
+    if ((this.world as any).createNamedEntity) {
+      mainCamera = (this.world as any).createNamedEntity('MainCamera');
+    } else {
+      mainCamera = this.world.createEntity();
+    }
 
-    // Point light for atmosphere
-    const pointLight = this.world.createEntity();
-    pointLight.addComponent(new TransformComponent(
-      { x: 0, y: 5, z: 0 },
-      { x: 0, y: 0, z: 0 },
+    mainCamera.addComponent(new TransformComponent(
+      { x: 0, y: 5, z: 10 },
+      { x: -15, y: 0, z: 0 },
       { x: 1, y: 1, z: 1 }
     ));
-    pointLight.addComponent(new ThreeLightComponent({
-      lightType: 'point',
-      color: '#ff8040',
-      intensity: 0.2
-    }));
+
+    // Camera entity is created for organization, actual camera controls are handled by Three.js directly
   }
 
   /**

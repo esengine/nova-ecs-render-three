@@ -56,7 +56,7 @@ export interface ThreeRenderSystemOptions {
 export class ThreeRenderSystem extends System {
   // 公共属性
   public readonly scene: THREE.Scene;
-  public readonly renderer: THREE.WebGLRenderer;
+  public renderer: THREE.WebGLRenderer;
   public camera!: THREE.Camera;
 
   // 私有属性
@@ -112,6 +112,26 @@ export class ThreeRenderSystem extends System {
     
     this._isInitialized = true;
     console.log('ThreeRenderSystem: Added to world and initialized');
+  }
+
+  /**
+   * Set canvas for the renderer
+   * 为渲染器设置画布
+   */
+  setCanvas(canvas: HTMLCanvasElement): void {
+    if (this.renderer && this.renderer.domElement !== canvas) {
+      // Dispose old renderer and create new one with the new canvas
+      this.renderer.dispose();
+      this.renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: this._options.antialias,
+        alpha: true,
+        preserveDrawingBuffer: false,
+        powerPreference: "high-performance"
+      });
+      this._setupRenderer();
+      this._setupWebGLContextHandlers();
+    }
   }
 
   /**

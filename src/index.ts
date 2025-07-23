@@ -10,6 +10,7 @@ export const MODULE_NAME = 'nova-ecs-render-three';
 export * from './components';
 export * from './systems';
 export * from './adapters';
+export * from './plugins';
 
 // Three.js specific exports
 export * from './materials';
