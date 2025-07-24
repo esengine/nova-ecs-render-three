@@ -9,9 +9,9 @@ import {
   ThreeMeshComponent,
   ThreeMaterialComponent,
   ThreeGeometryComponent,
-  ThreeLightComponent,
-  TransformComponent
+  ThreeLightComponent
 } from '../components';
+import { TransformComponent } from '@esengine/nova-ecs-core';
 
 // MeshRendererComponent for compatibility
 export class MeshRendererComponent extends Component {
@@ -29,8 +29,7 @@ export class MeshRendererComponent extends Component {
  * Editor Bridge for Three.js integration
  * 编辑器桥接器 - 用于Three.js集成
  */
-// Re-export components for convenience
-export { TransformComponent, ThreeLightComponent } from '../components';
+export { ThreeLightComponent } from '../components';
 
 export class ThreeEditorBridge {
   private world: World;
@@ -198,11 +197,11 @@ export class ThreeEditorBridge {
       mainLight = this.world.createEntity();
     }
 
-    mainLight.addComponent(new TransformComponent(
-      { x: 10, y: 10, z: 5 },
-      { x: -45, y: 45, z: 0 },
-      { x: 1, y: 1, z: 1 }
-    ));
+    const lightTransform = new TransformComponent();
+    lightTransform.position = { x: 10, y: 10, z: 5 };
+    lightTransform.rotation = { x: -45, y: 45, z: 0 };
+    lightTransform.scale = { x: 1, y: 1, z: 1 };
+    mainLight.addComponent(lightTransform);
 
     mainLight.addComponent(new ThreeLightComponent({
       lightType: 'directional',
@@ -219,13 +218,12 @@ export class ThreeEditorBridge {
       mainCamera = this.world.createEntity();
     }
 
-    mainCamera.addComponent(new TransformComponent(
-      { x: 0, y: 5, z: 10 },
-      { x: -15, y: 0, z: 0 },
-      { x: 1, y: 1, z: 1 }
-    ));
+    const cameraTransform = new TransformComponent();
+    cameraTransform.position = { x: 0, y: 5, z: 10 };
+    cameraTransform.rotation = { x: -15, y: 0, z: 0 };
+    cameraTransform.scale = { x: 1, y: 1, z: 1 };
+    mainCamera.addComponent(cameraTransform);
 
-    // Camera entity is created for organization, actual camera controls are handled by Three.js directly
   }
 
   /**

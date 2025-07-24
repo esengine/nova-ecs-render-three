@@ -5,8 +5,14 @@
 
 import { BasePlugin, PluginPriority, type World } from '@esengine/nova-ecs';
 import { ThreeRenderSystem } from '../systems/ThreeRenderSystem';
-import { TransformComponent } from '../adapters';
-import { ThreeLightComponent } from '../components';
+import { TransformComponent } from '@esengine/nova-ecs-core';
+import { 
+  ThreeLightComponent,
+  ThreeMeshComponent,
+  ThreeMaterialComponent,
+  ThreeGeometryComponent,
+  ThreeCameraComponent 
+} from '../components';
 import type { PluginMetadata } from '@esengine/nova-ecs';
 
 /**
@@ -67,6 +73,7 @@ export class ThreeRenderPlugin extends BasePlugin {
     this.log('Installing Three.js render plugin...');
 
     try {
+
       // Create and add render system
       this._renderSystem = new ThreeRenderSystem();
       world.addSystem(this._renderSystem);
@@ -155,11 +162,11 @@ export class ThreeRenderPlugin extends BasePlugin {
       }
 
       // Add transform and light components
-      mainLight.addComponent(new TransformComponent(
-        { x: 10, y: 10, z: 5 },
-        { x: -45, y: 45, z: 0 },
-        { x: 1, y: 1, z: 1 }
-      ));
+      const lightTransform = new TransformComponent();
+      lightTransform.position = { x: 10, y: 10, z: 5 };
+      lightTransform.rotation = { x: -45, y: 45, z: 0 };
+      lightTransform.scale = { x: 1, y: 1, z: 1 };
+      mainLight.addComponent(lightTransform);
 
       mainLight.addComponent(new ThreeLightComponent({
         lightType: 'directional',
@@ -176,11 +183,11 @@ export class ThreeRenderPlugin extends BasePlugin {
         mainCamera = world.createEntity();
       }
 
-      mainCamera.addComponent(new TransformComponent(
-        { x: 0, y: 5, z: 10 },
-        { x: -15, y: 0, z: 0 },
-        { x: 1, y: 1, z: 1 }
-      ));
+      const cameraTransform = new TransformComponent();
+      cameraTransform.position = { x: 0, y: 5, z: 10 };
+      cameraTransform.rotation = { x: -15, y: 0, z: 0 };
+      cameraTransform.scale = { x: 1, y: 1, z: 1 };
+      mainCamera.addComponent(cameraTransform);
 
       this.log('Default scene entities created');
     } catch (error) {

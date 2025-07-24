@@ -15,7 +15,8 @@
   "author": "esengine",
   "license": "MIT",
   "peerDependencies": {
-    "@esengine/nova-ecs": "^1.0.0",
+    "@esengine/nova-ecs": "file:../nova-ecs",
+    "@esengine/nova-ecs-editor": "file:../nova-ecs-editor",
     "three": "^0.168.0"
   },
   "devDependencies": {

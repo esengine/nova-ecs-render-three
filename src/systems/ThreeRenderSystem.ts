@@ -28,9 +28,9 @@ import {
   ThreeMaterialComponent,
   ThreeGeometryComponent,
   ThreeLightComponent,
-  ThreeCameraComponent,
-  TransformComponent
+  ThreeCameraComponent
 } from '../components';
+import { TransformComponent } from '@esengine/nova-ecs-core';
 
 /**
  * Three.js渲染系统配置选项

@@ -15,7 +15,7 @@ export class ThreeMaterialComponent extends Component {
   public transparent: boolean;
   public opacity: number;
   public wireframe: boolean;
-  public texture?: string;
+  public texture: string | undefined;
   public needsUpdate: boolean = false;
 
   constructor(config: Partial<ThreeMaterialComponent> = {}) {

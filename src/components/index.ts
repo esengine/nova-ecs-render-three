@@ -3,7 +3,6 @@
  * Three.js ECS 组件
  */
 
-export * from './TransformComponent';
 export * from './ThreeMeshComponent';
 export * from './ThreeMaterialComponent';
 export * from './ThreeGeometryComponent';

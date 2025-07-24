@@ -17,3 +17,5 @@ export * from './materials';
 export * from './geometries';
 export * from './lights';
 export * from './cameras';
+
+console.log('Nova ECS Three.js package loaded');
