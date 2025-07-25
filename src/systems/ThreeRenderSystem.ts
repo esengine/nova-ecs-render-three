@@ -111,7 +111,6 @@ export class ThreeRenderSystem extends System {
     super.onAddedToWorld(world);
     
     this._isInitialized = true;
-    console.log('ThreeRenderSystem: Added to world and initialized');
   }
 
   /**
@@ -143,7 +142,6 @@ export class ThreeRenderSystem extends System {
     this._isInitialized = false;
     
     super.onRemovedFromWorld();
-    console.log('ThreeRenderSystem: Removed from world and cleaned up');
   }
 
   /**

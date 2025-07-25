@@ -70,7 +70,6 @@ export class ThreeRenderPlugin extends BasePlugin {
   async install(world: World): Promise<void> {
     this._world = world;
     
-    this.log('Installing Three.js render plugin...');
 
     try {
 
@@ -89,7 +88,6 @@ export class ThreeRenderPlugin extends BasePlugin {
         this._renderSystem.setCanvas(config.canvas);
       }
 
-      this.log('Three.js render plugin installed successfully');
     } catch (error) {
       this.error('Failed to install Three.js render plugin');
       throw error;
@@ -101,7 +99,6 @@ export class ThreeRenderPlugin extends BasePlugin {
    * 卸载插件
    */
   async uninstall(world: World): Promise<void> {
-    this.log('Uninstalling Three.js render plugin...');
 
     try {
       // Remove render system
@@ -111,7 +108,6 @@ export class ThreeRenderPlugin extends BasePlugin {
       }
 
 
-      this.log('Three.js render plugin uninstalled successfully');
     } catch (error) {
       this.error('Failed to uninstall Three.js render plugin');
       throw error;
